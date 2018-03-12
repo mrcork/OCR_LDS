@@ -41,6 +41,12 @@ for region in geo_regions['features']:
 # This code gives us the geojson for LAs   
 URL = urllib.request.urlopen('https://opendata.arcgis.com/datasets/5e14c6bedc8740d19683517e5e902057_0.geojson').read()
 geo_LAs = json.loads(URL)
+LAs_to_clean = {"Isle of Anglesey": "Anglesey","King's Lynn and West Norfolk": "King`s Lynn and West Norfolk"}
+
+for LA in geo_LAs['features']:
+    name = LA["properties"]["lad09nm"]
+    if name in LAs_to_clean: 
+        LA["properties"]["lad09nm"] = LAs_to_clean[name]
 
 geo_LAs['features'] = [LA for LA in geo_LAs['features'] if LA["properties"]["lad09nm"] in LAs]
 
